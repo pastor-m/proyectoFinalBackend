@@ -36,4 +36,6 @@ router.post("/:cid/product/:pid", async(req,res)=>{
     }
 })
 
+router
+
 export default router

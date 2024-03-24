@@ -45,7 +45,5 @@ io.on("connection", (socket) => {
 
         const messages = await MessageModel.find();
         io.sockets.emit("message", messages)
-
- 
     })
 } )
