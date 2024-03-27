@@ -8,17 +8,16 @@ router.get("/", async (req,res)=>{
     try {
         const limit = req.query.limit;
         const page = req.query.page || 1;
-        const sort = req.query.sort;
         let filter;
          
         if (limit || page && req.query.category != undefined && req.query.stock != undefined){
             console.log(1)
             const products = await ProductsModel.paginate({}, {limit, page})
-            
+            products[1]._id
             const productsResult = products.docs.map(product => {
                 const {_id, ...rest} = product.toObject();
                 
-                return rest;
+                return {_id, ...rest};
             })
             
             res.render("products", {
@@ -31,7 +30,8 @@ router.get("/", async (req,res)=>{
                 totalPages: products.totalPages,
                 limit: products.limit,
                 prevLink: products.prevLink,
-                nextLink: products.nextLink
+                nextLink: products.nextLink,
+                id: productsResult._id
             })
         }
 
@@ -60,7 +60,7 @@ router.get("/", async (req,res)=>{
         }
 
         else if (req.query.category != undefined && req.query.stock == undefined){
-            console.log(2)
+            console.log(3)
             filter = req.query.category;
             const products = await ProductsModel.paginate({"category": filter}, {limit: 10, page: 1})
             const productsResult = products.docs.map(product => {
@@ -82,11 +82,11 @@ router.get("/", async (req,res)=>{
         }
 
 
-        else if (!limit || !page && req.query.category == undefined && req.query.stock == undefined && sort != undefined){
-            console.log(3)
-            if (sort == 'asc'){
-                const products = await ProductsModel.paginate({}, {sort: {"price": 'asc'}, page: 1});
-                console.log(products)
+        else if (limit || page && req.query.category == undefined && req.query.stock == undefined && req.query.sort != undefined){
+            console.log(3.5)
+            if (req.query.sort == 'asc'){
+                console.log(4)
+                const products = await ProductsModel.paginate({}, {sort: {"price": 'asc'}, limit:10, page: 1});
                 const productsResult = products.docs.map(product => {
                     const {_id, ...rest} = product.toObject();
                     
@@ -103,8 +103,9 @@ router.get("/", async (req,res)=>{
                     totalPages: products.totalPages,
                     limit: products.limit
                 })
-            } else if(sort == 'desc'){
-                const products = await ProductsModel.paginate({}, {sort: {"price": 'desc'}, page: 1});
+            } else if(req.query.sort == 'desc'){
+                console.log(5)
+                const products = await ProductsModel.paginate({}, {sort: {"price": 'desc'}, limit:10, page: 1});
                 console.log(products)
                 const productsResult = products.docs.map(product => {
                     const {_id, ...rest} = product.toObject();
@@ -126,9 +127,9 @@ router.get("/", async (req,res)=>{
  
         }
 
-        else if (limit || page && req.query.category == undefined && req.query.stock == undefined && sort == undefined){
-            console.log(4)
-            const products = await ProductsModel.paginate({}, {limit, page})
+        else if (!limit || page && req.query.category == undefined && req.query.stock == undefined && req.query.sort == undefined){
+            console.log(6)
+            const products = await ProductsModel.paginate({}, {limit: 10, page: 1})
             const productsResult = products.docs.map(product => {
                 const {_id, ...rest} = product.toObject();
                 
@@ -143,7 +144,8 @@ router.get("/", async (req,res)=>{
                 nextPage: products.nextPage,
                 currentPage: products.page,
                 totalPages: products.totalPages,
-                limit: products.limit
+                limit: products.limit,
+                id: productsResult._id
             })
         }
     } catch (error) {

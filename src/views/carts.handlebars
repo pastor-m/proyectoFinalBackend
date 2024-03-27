@@ -1,0 +1,15 @@
+<h1>Cart</h1>
+<h2>Cart ID {{cartId}}</h2>
+
+<h2>Products from cart {{cartId}}</h2>
+<ul>
+    {{#each products}}
+        <li>{{this.title}}</li>
+        <li>${{this.price}}</li>
+        <li>Stock:{{this.stock}}</li>
+        <li>{{this.category}}</li>
+        <li>
+            <hr>
+        </li>
+    {{/each}}
+</ul>
