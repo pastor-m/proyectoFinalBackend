@@ -5,15 +5,16 @@ import ProductsModel from "../models/products.models.js";
 
 //Obtenemos todos los productos
 router.get("/", async (req,res)=>{
+    
     try {
         const limit = req.query.limit;
         const page = req.query.page || 1;
         let filter;
-         
+        const user = req.session.user;
+        
         if (limit || page && req.query.category != undefined && req.query.stock != undefined){
-            console.log(1)
             const products = await ProductsModel.paginate({}, {limit, page})
-            products[1]._id
+            // products[1]._id
             const productsResult = products.docs.map(product => {
                 const {_id, ...rest} = product.toObject();
                 
@@ -31,14 +32,13 @@ router.get("/", async (req,res)=>{
                 limit: products.limit,
                 prevLink: products.prevLink,
                 nextLink: products.nextLink,
-                id: productsResult._id
+                id: productsResult._id,
+                user: user
             })
         }
 
         else if (req.query.category == undefined && req.query.stock != undefined){
-            console.log(2)
             filter = req.query.stock
-            console.log(filter)
             const products = await ProductsModel.paginate({"stock": {$gte:filter}}, {limit: 10, page: 1})
 
             const productsResult = products.docs.map(product => {
@@ -55,12 +55,12 @@ router.get("/", async (req,res)=>{
                 nextPage: products.nextPage,
                 currentPage: products.page,
                 totalPages: products.totalPages,
-                limit: products.limit
+                limit: products.limit,
+                user: user
             })
         }
 
         else if (req.query.category != undefined && req.query.stock == undefined){
-            console.log(3)
             filter = req.query.category;
             const products = await ProductsModel.paginate({"category": filter}, {limit: 10, page: 1})
             const productsResult = products.docs.map(product => {
@@ -77,15 +77,14 @@ router.get("/", async (req,res)=>{
                 nextPage: products.nextPage,
                 currentPage: products.page,
                 totalPages: products.totalPages,
-                limit: products.limit
+                limit: products.limit,
+                user: user
             })
         }
 
 
         else if (limit || page && req.query.category == undefined && req.query.stock == undefined && req.query.sort != undefined){
-            console.log(3.5)
             if (req.query.sort == 'asc'){
-                console.log(4)
                 const products = await ProductsModel.paginate({}, {sort: {"price": 'asc'}, limit:10, page: 1});
                 const productsResult = products.docs.map(product => {
                     const {_id, ...rest} = product.toObject();
@@ -101,10 +100,10 @@ router.get("/", async (req,res)=>{
                     nextPage: products.nextPage,
                     currentPage: products.page,
                     totalPages: products.totalPages,
-                    limit: products.limit
+                    limit: products.limit,
+                    user: user
                 })
             } else if(req.query.sort == 'desc'){
-                console.log(5)
                 const products = await ProductsModel.paginate({}, {sort: {"price": 'desc'}, limit:10, page: 1});
                 console.log(products)
                 const productsResult = products.docs.map(product => {
@@ -121,14 +120,14 @@ router.get("/", async (req,res)=>{
                     nextPage: products.nextPage,
                     currentPage: products.page,
                     totalPages: products.totalPages,
-                    limit: products.limit
+                    limit: products.limit,
+                    user: user
                 })
             }
  
         }
 
         else if (!limit || page && req.query.category == undefined && req.query.stock == undefined && req.query.sort == undefined){
-            console.log(6)
             const products = await ProductsModel.paginate({}, {limit: 10, page: 1})
             const productsResult = products.docs.map(product => {
                 const {_id, ...rest} = product.toObject();
@@ -145,7 +144,8 @@ router.get("/", async (req,res)=>{
                 currentPage: products.page,
                 totalPages: products.totalPages,
                 limit: products.limit,
-                id: productsResult._id
+                id: productsResult._id,
+                user: user
             })
         }
     } catch (error) {

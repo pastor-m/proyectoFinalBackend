@@ -5,6 +5,7 @@ import "./database.js"
 import cartsRouter from "./routes/carts.router.js"
 import productsRouter from "./routes/products.router.js"
 import viewsRouter from "./routes/views.router.js"
+import sessionsRouter from "./routes/sessions.router.js"
 import exphbs from "express-handlebars";
 import {Server} from "socket.io";
 
@@ -18,13 +19,20 @@ app.set("views","./src/views");
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("./src/public"));
+app.use(session({
+    secret: "jelou",
+    resave: true,
+    saveUninitialized: false,
+}))
 
 //Rutas
 app.use("/products", productsRouter);
 
 app.use("/carts", cartsRouter);
 
-app.use("/chat", viewsRouter)
+app.use("/", viewsRouter)
+
+app.use("/sessions", sessionsRouter)
 ////CHAT
 
 const httpServer = app.listen(PORT, () => {
@@ -33,6 +41,7 @@ const httpServer = app.listen(PORT, () => {
 //1) Me guardo una referencia del servidor. 
 
 import MessageModel from "./models/message.model.js";
+import session from "express-session";
 const io = new Server(httpServer);
 
 

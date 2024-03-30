@@ -1,5 +1,10 @@
 <h1>Products</h1>
 
+<p>Welcome, {{user.first_name}} - {{user.last_name}}</p>
+<p>Age:{{user.age}}</p>
+<p>Email: {{user.email}}</p>
+<p>Role: {{user.role}}</p>
+
 <ul>
     {{#each products}}
         <li>{{this.title}}</li>
