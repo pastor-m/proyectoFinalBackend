@@ -8,6 +8,8 @@ import viewsRouter from "./routes/views.router.js"
 import sessionsRouter from "./routes/sessions.router.js"
 import exphbs from "express-handlebars";
 import {Server} from "socket.io";
+import passport from "passport";
+import initializePassport from "./config/passport.conifg.js";
 
 
 //Handlebars
@@ -24,6 +26,10 @@ app.use(session({
     resave: true,
     saveUninitialized: false,
 }))
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Rutas
 app.use("/products", productsRouter);
