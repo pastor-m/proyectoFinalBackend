@@ -9,6 +9,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
 import UserModel from "../models/users.model.js";
+import CartsModel from "../models/carts.models.js";
 import { createHash, isValidPassword } from "../utils/hashbcrypt.js";
 
 import GitHubStrategy from "passport-github2";
@@ -22,6 +23,8 @@ const initializePassport = () => {
     }, async(req, username, password, done)=> {
         const {first_name, last_name, email, age} = req.body;
         try {
+            const newCart = new CartsModel();
+            await newCart.save();
             let user = await UserModel.findOne({email});
             if(user){
                 return done(null,false);
@@ -32,6 +35,7 @@ const initializePassport = () => {
                     email,
                     age,
                     password: createHash(password),
+                    cart: newCart.id,
                     role: "admin"
                  }
                  let result = await UserModel.create(newUser);
@@ -43,6 +47,7 @@ const initializePassport = () => {
                     email,
                     age,
                     password: createHash(password),
+                    cart: newCart.id,
                     role: "user"
                  }
                  let result = await UserModel.create(newUser);

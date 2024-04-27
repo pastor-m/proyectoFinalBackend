@@ -16,6 +16,7 @@ router.post("/", passport.authenticate("register", {
                 age: req.user.age,
                 first_name: req.user.first_name,
                 last_name: req.user.last_name,
+                cart: req.user.cart,
                 role: "admin"
             };
 
