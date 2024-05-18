@@ -10,6 +10,9 @@ import exphbs from "express-handlebars";
 import {Server} from "socket.io";
 import passport from "passport";
 import initializePassport from "./config/passport.conifg.js";
+import MessageModel from "./models/message.model.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 
 //Handlebars
@@ -25,6 +28,9 @@ app.use(session({
     secret: "jelou",
     resave: true,
     saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl:"mongodb+srv://pastorml09:coderhouse@cluster0.pq1hrhv.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0", ttl: 1000
+    })
 }))
 
 initializePassport();
@@ -46,8 +52,7 @@ const httpServer = app.listen(PORT, () => {
 })
 //1) Me guardo una referencia del servidor. 
 
-import MessageModel from "./models/message.model.js";
-import session from "express-session";
+
 const io = new Server(httpServer);
 
 

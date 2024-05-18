@@ -18,21 +18,6 @@ class ProductsService {
                 return {_id, ...rest};
             })
             
-            //Esto va en el products controller
-            // res.render("products", {
-            //     products: productsResult,
-            //     hasPrevPage: products.hasPrevPage,
-            //     hasNextPage: products.hasNextPage,
-            //     prevPage: products.prevPage,
-            //     nextPage: products.nextPage,
-            //     currentPage: products.page,
-            //     totalPages: products.totalPages,
-            //     limit: products.limit,
-            //     prevLink: products.prevLink,
-            //     nextLink: products.nextLink,
-            //     id: productsResult._id,
-            //     user: user
-            // })
 
             return {
                 products,
@@ -50,17 +35,6 @@ class ProductsService {
                 return rest;
             })
             
-            // res.render("products", {
-            //     products: productsResult,
-            //     hasPrevPage: products.hasPrevPage,
-            //     hasNextPage: products.hasNextPage,
-            //     prevPage: products.prevPage,
-            //     nextPage: products.nextPage,
-            //     currentPage: products.page,
-            //     totalPages: products.totalPages,
-            //     limit: products.limit,
-            //     user: user
-            // })
 
             return {
                 products,
@@ -77,18 +51,6 @@ class ProductsService {
                 return rest;
             })
             
-            // res.render("products", {
-            //     products: productsResult,
-            //     hasPrevPage: products.hasPrevPage,
-            //     hasNextPage: products.hasNextPage,
-            //     prevPage: products.prevPage,
-            //     nextPage: products.nextPage,
-            //     currentPage: products.page,
-            //     totalPages: products.totalPages,
-            //     limit: products.limit,
-            //     user: user
-            // })
-
             return {
                 products,
                 productsResult
@@ -199,6 +161,7 @@ class ProductsService {
     //Agregamos producto
     async addProd(prod){
         try {
+            
             const newProduct = new ProductsModel(prod);
             return await newProduct.save();
             // res.send({message: "New product added"})

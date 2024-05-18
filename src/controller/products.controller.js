@@ -1,11 +1,14 @@
 import ProductsService from "../services/products.service.js";
+import passport from "passport";
 const productsService = new ProductsService();
 
 class ProductsController {
+
     async getProds(req, res){
+        const user = req.session.user;
         try {
-            const user = req.session.user;
-            console.log(user)
+            const role = user.role;
+            console.log(role)
             let result = await productsService.getProds(req.query.limit,req.query.page,req.session.user,req.query.category,req.query.stock,req.query.sort)
             res.render("products", {
             products: result.productsResult,

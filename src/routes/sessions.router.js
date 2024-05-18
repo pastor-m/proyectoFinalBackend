@@ -93,7 +93,10 @@ router.get("/failedregister", async(req, res)=>{
 // })
 
 router.post("/login", passport.authenticate("login", {failureRedirect: "/sessions/failedlogin" }), async (req,res) =>{
-    if(!req.user) {return res.status(400).send("Invalid credentials");}
+    if(!req.user) {
+        return res.status(400).send("Invalid credentials");
+    }
+    
     else {
     req.session.user = {
         email: req.user.email,
@@ -104,11 +107,14 @@ router.post("/login", passport.authenticate("login", {failureRedirect: "/session
     };
 
     req.session.login = true;
+    req.session.save()
 
     res.redirect("/products")
 
     }
 })
+
+
 
 router.get("/failedlogin", (req,res)=>{
     res.send("Failed login");

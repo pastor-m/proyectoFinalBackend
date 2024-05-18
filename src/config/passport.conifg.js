@@ -62,14 +62,17 @@ const initializePassport = () => {
     //Estrategia para login de ususarios
     passport.use("login", new LocalStrategy({usernameField: "email"}, async(email, password, done)=>{
         try {
+            
             const user = await UserModel.findOne({email});
+            console.log(user);
             if(!user){
                 console.log("User doesn't exist")
                 return done (null, false);
             }
 
-            if(!isValidPassword(password,user)) return done(null,false)
-
+            if(!isValidPassword(password,user)) {
+                return done(null,user)
+            }
             return done(null, user);
         } catch (error) {
             return done(error)
