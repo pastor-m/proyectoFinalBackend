@@ -3,6 +3,7 @@ import ProductsModel from "../models/products.models.js";
 class ProductsService {
     //Obtenemos todos los productos
     async getProds(limitq,pageq,userq,category,stock,sort){
+        console.log("getting prods")
         try {
         const limit = limitq;
         const page = pageq || 1;
@@ -66,18 +67,6 @@ class ProductsService {
                     
                     return rest;
                 })
-                
-                // res.render("products", {
-                //     products: productsResult,
-                //     hasPrevPage: products.hasPrevPage,
-                //     hasNextPage: products.hasNextPage,
-                //     prevPage: products.prevPage,
-                //     nextPage: products.nextPage,
-                //     currentPage: products.page,
-                //     totalPages: products.totalPages,
-                //     limit: products.limit,
-                //     user: user
-                // })
 
                 return {
                     products,
@@ -92,18 +81,6 @@ class ProductsService {
                     
                     return rest;
                 })
-                
-                // res.render("products", {
-                //     products: productsResult,
-                //     hasPrevPage: products.hasPrevPage,
-                //     hasNextPage: products.hasNextPage,
-                //     prevPage: products.prevPage,
-                //     nextPage: products.nextPage,
-                //     currentPage: products.page,
-                //     totalPages: products.totalPages,
-                //     limit: products.limit,
-                //     user: user
-                // })
 
                 return {
                     products,
@@ -120,19 +97,6 @@ class ProductsService {
                 
                 return rest;
             })
-            
-            // res.render("products", {
-            //     products: productsResult,
-            //     hasPrevPage: products.hasPrevPage,
-            //     hasNextPage: products.hasNextPage,
-            //     prevPage: products.prevPage,
-            //     nextPage: products.nextPage,
-            //     currentPage: products.page,
-            //     totalPages: products.totalPages,
-            //     limit: products.limit,
-            //     id: productsResult._id,
-            //     user: user
-            // })
 
             return {
                 products,
@@ -161,7 +125,7 @@ class ProductsService {
     //Agregamos producto
     async addProd(prod){
         try {
-            
+            console.log("products user service")
             const newProduct = new ProductsModel(prod);
             return await newProduct.save();
             // res.send({message: "New product added"})

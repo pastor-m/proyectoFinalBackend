@@ -5,10 +5,12 @@ const productsService = new ProductsService();
 class ProductsController {
 
     async getProds(req, res){
-        const user = req.session.user;
+        
         try {
-            const role = user.role;
-            console.log(role)
+            const user = req.session.user;
+            // const role = user.role;
+            // console.log("2")
+            // console.log(role)
             let result = await productsService.getProds(req.query.limit,req.query.page,req.session.user,req.query.category,req.query.stock,req.query.sort)
             res.render("products", {
             products: result.productsResult,
@@ -40,8 +42,11 @@ class ProductsController {
     }
 
     //Agregamos producto
-    async addProd(req,res){
+    async addProd(req, res){
         try {
+            const user = req.session.user;
+            console.log(user)
+            console.log("products user controller")
             await productsService.addProd(req.body);
             res.send({message: "New product added"});
         } catch (error) {

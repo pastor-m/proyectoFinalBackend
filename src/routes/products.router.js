@@ -1,8 +1,8 @@
 import { Router } from "express";
 const router = Router();
-
-import ProductsModel from "../models/products.models.js";
+// import ProductsModel from "../models/products.models.js";
 import ProductsController from "../controller/products.controller.js";
+import adminValidation from "../middleware/adminValidation.js";
 const productsController = new ProductsController();
 
 
@@ -13,13 +13,13 @@ router.get("/", productsController.getProds);
 router.get("/:pid", productsController.getProdById);
 
 //Agregamos producto
-router.post("/", productsController.addProd);
+router.post("/",adminValidation, productsController.addProd);
 
 //Actualizamos producto
-router.put("/:pid", productsController.updateProd);
+router.put("/:pid", adminValidation, productsController.updateProd);
 
 
 //Eliminamos producto
-router.delete("/:pid", productsController.deleteProd)
+router.delete("/:pid", adminValidation, productsController.deleteProd)
 
 export default router
