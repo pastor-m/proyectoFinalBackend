@@ -22,4 +22,6 @@ router.put("/:cid", userValidation, cartsController.updateCart)
 
 router.put("/:cid/product/:pid", userValidation, cartsController.updateProdQty)
 
+router.post("/:cid/purchase", cartsController.cartPurchase)
+
 export default router

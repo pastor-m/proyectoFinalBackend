@@ -3,7 +3,6 @@ import ProductsModel from "../models/products.models.js";
 class ProductsService {
     //Obtenemos todos los productos
     async getProds(limitq,pageq,userq,category,stock,sort){
-        console.log("getting prods")
         try {
         const limit = limitq;
         const page = pageq || 1;
@@ -12,15 +11,15 @@ class ProductsService {
 
         if (limit || page && category != undefined && stock != undefined){
             const products = await ProductsModel.paginate({}, {limit, page})
-            // products[1]._id
-            const productsResult = products.docs.map(product => {
-                const {_id, ...rest} = product.toObject();
-                
-                return {_id, ...rest};
-            })
             
-
+            // products[1].id
+            const productsResult = products.docs.map(product => {
+                const {id, ...rest} = product.toObject();
+                
+                return {id, ...rest};
+            })
             return {
+                
                 products,
                 productsResult
             }
@@ -29,9 +28,8 @@ class ProductsService {
         else if (category == undefined && stock != undefined){
             filter = stock
             const products = await ProductsModel.paginate({"stock": {$gte:filter}}, {limit: 10, page: 1})
-
             const productsResult = products.docs.map(product => {
-                const {_id, ...rest} = product.toObject();
+                const {id, ...rest} = product.toObject();
                 
                 return rest;
             })
@@ -47,7 +45,7 @@ class ProductsService {
             filter = category;
             const products = await ProductsModel.paginate({"category": filter}, {limit: 10, page: 1})
             const productsResult = products.docs.map(product => {
-                const {_id, ...rest} = product.toObject();
+                const {id, ...rest} = product.toObject();
                 
                 return rest;
             })
@@ -63,7 +61,7 @@ class ProductsService {
             if (sort == 'asc'){
                 const products = await ProductsModel.paginate({}, {sort: {"price": 'asc'}, limit:10, page: 1});
                 const productsResult = products.docs.map(product => {
-                    const {_id, ...rest} = product.toObject();
+                    const {id, ...rest} = product.toObject();
                     
                     return rest;
                 })
@@ -75,9 +73,8 @@ class ProductsService {
                 
             } else if(sort == 'desc'){
                 const products = await ProductsModel.paginate({}, {sort: {"price": 'desc'}, limit:10, page: 1});
-                console.log(products)
                 const productsResult = products.docs.map(product => {
-                    const {_id, ...rest} = product.toObject();
+                    const {id, ...rest} = product.toObject();
                     
                     return rest;
                 })
@@ -93,7 +90,7 @@ class ProductsService {
         else if (!limit || page && category == undefined && stock == undefined && sort == undefined){
             const products = await ProductsModel.paginate({}, {limit: 10, page: 1})
             const productsResult = products.docs.map(product => {
-                const {_id, ...rest} = product.toObject();
+                const {id, ...rest} = product.toObject();
                 
                 return rest;
             })

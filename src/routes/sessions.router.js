@@ -107,9 +107,10 @@ router.post("/login", passport.authenticate("login", {failureRedirect: "/session
     };
 
     req.session.login = true;
-    req.session.save()
 
     res.redirect("/products")
+
+    req.session.save()
 
     }
 })

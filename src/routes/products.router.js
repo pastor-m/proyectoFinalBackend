@@ -18,7 +18,6 @@ router.post("/",adminValidation, productsController.addProd);
 //Actualizamos producto
 router.put("/:pid", adminValidation, productsController.updateProd);
 
-
 //Eliminamos producto
 router.delete("/:pid", adminValidation, productsController.deleteProd)
 

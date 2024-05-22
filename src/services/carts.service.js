@@ -23,11 +23,16 @@ class CartsService {
         }
     }
 
-    async addCartProd(prodId,cartId){
+    async addCartProd(prodId,cartId,quantity){
         try {
-            const newProduct = prodId;
+            const newProduct = {
+                prodId,
+                quantity
+            }
+            console.log(newProduct)
             const cart = await CartsModel.findById(cartId);
             cart.products.push(newProduct);
+            console.log(cart)
             const updatedCart = await CartsModel.findByIdAndUpdate(cartId, cart);
             // res.send({message:"New product added"});
         } catch (error) {
@@ -83,6 +88,32 @@ class CartsService {
     
         } catch (error) {
             throw new Error("Error while updating the cart")
+        }
+    }
+
+    async cartPurchase(cartId){
+        try {
+            // let cart = await CartsModel.findById(cartId)
+            //                            .populate("products.product")
+            //                            .lean();
+            // console.log("Populated cart:", cart.products[0]._id);
+            let cart = await CartsModel.findById(cartId);
+            console.log("Cart before populate:", cart);
+            let cart2 = await CartsModel.findById(cartId)
+                                   .populate('products.product')
+                                   .lean(); // lean() para obtener un objeto JavaScript plano
+            console.log("Cart after populate:", cart2);
+            CartsModel.findOne()
+                .populate({
+                    path: 'products.product',
+                    model: 'products' // Asegúrate de que este modelo corresponda al usado para los productos.
+                })
+                .then(cart => console.log(cart))
+                .catch(err => console.error(err));
+            return cart;
+        } catch (error) {
+            console.error("Error while updating the cart", error);
+            throw new Error("Error while updating the cart");
         }
     }
 }

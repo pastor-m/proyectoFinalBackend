@@ -8,10 +8,9 @@ class ProductsController {
         
         try {
             const user = req.session.user;
-            // const role = user.role;
-            // console.log("2")
-            // console.log(role)
+            console.log(req.query)
             let result = await productsService.getProds(req.query.limit,req.query.page,req.session.user,req.query.category,req.query.stock,req.query.sort)
+            // console.log(result.productsResult)
             res.render("products", {
             products: result.productsResult,
             hasPrevPage: result.products.hasPrevPage,
@@ -34,8 +33,18 @@ class ProductsController {
     //Obtenemos producto por ID
     async getProdById(req, res){
         try {
+            const user = req.session.user;
             let product = await productsService.getProdById(req.params.pid)
-            res.json(product)
+            console.log(product)
+            res.render("product",{
+                id: product._id,
+                title: product.title,
+                description: product.description,
+                category: product.category,
+                stock: product.stock,
+                thumbnail: product.thumbnail,
+                price: product.price
+            })
         } catch (error) {
             res.status(500).json({message:"Server error"})
         }
@@ -45,8 +54,6 @@ class ProductsController {
     async addProd(req, res){
         try {
             const user = req.session.user;
-            console.log(user)
-            console.log("products user controller")
             await productsService.addProd(req.body);
             res.send({message: "New product added"});
         } catch (error) {

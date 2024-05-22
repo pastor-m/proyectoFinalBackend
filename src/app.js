@@ -27,10 +27,15 @@ app.use(express.static("./src/public"));
 app.use(session({
     secret: "jelou",
     resave: true,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: MongoStore.create({
-        mongoUrl:"mongodb+srv://pastorml09:coderhouse@cluster0.pq1hrhv.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0", ttl: 1000
-    })
+        mongoUrl:"mongodb+srv://pastorml09:coderhouse@cluster0.pq1hrhv.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0",
+        ttl: 1000,
+    }),
+    proxy: true,
+    cookie: {
+        secure: false
+    }
 }))
 
 initializePassport();

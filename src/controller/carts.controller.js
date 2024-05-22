@@ -27,7 +27,7 @@ class CartsController {
     async addCartProd(req,res){
         
         try {
-            await cartsService.addCartProd(req.params.pid,req.params.cid);
+            await cartsService.addCartProd(req.params.pid,req.params.cid, req.body.quantity);
             res.send({message:"New product added"});
         } catch (error) {
             res.status(500).json({message: "Server error"})
@@ -56,6 +56,15 @@ class CartsController {
         try {
             await cartsService.updateProdQty(req.params.body,req.params.cid)
             res.send({message:"Product quantity updated"});
+        } catch (error) {
+            res.status(500).json({message: "Server error"});
+        }
+    }
+
+    async cartPurchase(req,res){
+        try {
+            await cartsService.cartPurchase(req.params.cid)
+            res.send({message:"Cart Purchase"});
         } catch (error) {
             res.status(500).json({message: "Server error"});
         }
