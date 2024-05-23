@@ -1,8 +1,8 @@
 function adminValidation (req,res,next){
-    // console.log("validacion admin",req.body.role)
-    // if((req.session.user && req.session.user.role === "admin")){
-        if(true){
-        // console.log(req.session.user.role)
+    
+    if((req.session.user && req.session.user.role === "admin")){
+        
+        
         next()
     } else {
         res.status(403).send('Access denied')

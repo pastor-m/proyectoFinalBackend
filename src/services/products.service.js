@@ -122,7 +122,6 @@ class ProductsService {
     //Agregamos producto
     async addProd(prod){
         try {
-            console.log("products user service")
             const newProduct = new ProductsModel(prod);
             return await newProduct.save();
             // res.send({message: "New product added"})

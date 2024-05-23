@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {uuidv4} from "uuid"
+import { v4 as uuidv4 } from 'uuid';
 
 const ticketSchema = new mongoose.Schema({
     code: {
@@ -9,7 +9,7 @@ const ticketSchema = new mongoose.Schema({
     },
     purchase_datetime: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
     amount: {
         type: Number,

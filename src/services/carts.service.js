@@ -26,13 +26,11 @@ class CartsService {
     async addCartProd(prodId,cartId,quantity){
         try {
             const newProduct = {
-                prodId,
+                product: prodId,
                 quantity
             }
-            console.log(newProduct)
             const cart = await CartsModel.findById(cartId);
             cart.products.push(newProduct);
-            console.log(cart)
             const updatedCart = await CartsModel.findByIdAndUpdate(cartId, cart);
             // res.send({message:"New product added"});
         } catch (error) {
@@ -46,11 +44,11 @@ class CartsService {
             let cart = await CartsModel.findById(cartId);
             let productsArray = cart.products;
             let prodIndex = productsArray.findIndex((element) => {
-                return element == productToDelete;
+                return element._id == productToDelete;
             });
-            let updatedProducts = productsArray.splice(0,prodIndex);
-            cart = await CartsModel.findByIdAndUpdate(cartId,{products: updatedProducts})
-            return cart
+            let updatedProducts = productsArray.splice(prodIndex,prodIndex);
+            let updatedCart = await CartsModel.findByIdAndUpdate(cartId,{products: updatedProducts})
+            return updatedCart
         } catch (error) {
             throw new Error("Error while deleting a product from the cart")
         }
@@ -93,27 +91,26 @@ class CartsService {
 
     async cartPurchase(cartId){
         try {
-            // let cart = await CartsModel.findById(cartId)
-            //                            .populate("products.product")
-            //                            .lean();
-            // console.log("Populated cart:", cart.products[0]._id);
-            let cart = await CartsModel.findById(cartId);
-            console.log("Cart before populate:", cart);
-            let cart2 = await CartsModel.findById(cartId)
-                                   .populate('products.product')
-                                   .lean(); // lean() para obtener un objeto JavaScript plano
-            console.log("Cart after populate:", cart2);
-            CartsModel.findOne()
+            let updatedCart = [];
+            let checkoutCart = [];
+            let cart = await CartsModel.findById(cartId)
                 .populate({
                     path: 'products.product',
-                    model: 'products' // Asegúrate de que este modelo corresponda al usado para los productos.
-                })
-                .then(cart => console.log(cart))
-                .catch(err => console.error(err));
-            return cart;
+                    model: 'products' 
+                }).lean();
+                for (let i = 0; i < cart.products.length; i++) {
+                    if(cart.products[i].quantity < cart.products[i].product.stock){
+                        checkoutCart.push(cart.products[i])
+                    } else {
+                        updatedCart = cart.products.splice(i);
+                        console.log(cartId);
+                        let mongUp = await CartsModel.findByIdAndUpdate(cartId, {products: updatedCart});
+                    }
+                }
+            return checkoutCart;
         } catch (error) {
             console.error("Error while updating the cart", error);
-            throw new Error("Error while updating the cart");
+            throw new Error("Error while updating the cart")
         }
     }
 }

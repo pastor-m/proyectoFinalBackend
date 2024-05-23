@@ -10,7 +10,7 @@ import userValidation from "../middleware/userValidation.js";
 router.get("/:cid", cartsController.getCart);
 
 //Agregar un carrito nuevo
-router.post("/", userValidation, cartsController.addCart);
+router.post("/", cartsController.addCart);
 
 //Agregar productos al carrito
 router.post("/:cid/product/:pid", userValidation, cartsController.addCartProd)

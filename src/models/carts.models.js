@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-// Define a schema for the product entry in the cart
+
 const productInCartSchema = new mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
@@ -10,11 +10,11 @@ const productInCartSchema = new mongoose.Schema({
     quantity: {
         type: Number,
         required: true,
-        default: 1 // Default quantity is 1 if not specified
+        default: 1 
     }
 });
 
-// Define the schema for the cart
+
 const cartSchema = new mongoose.Schema({
     products: [productInCartSchema]
 });
