@@ -1,4 +1,10 @@
+import session from "express-session";
 import CartsModel from "../models/carts.models.js";
+import TicketsService from "./tickets.services.js";
+const ticketsService = new TicketsService()
+import { v4 as uuidv4 } from 'uuid';
+import mongoose from "mongoose";
+import MongoStore from "connect-mongo";
 
 class CartsService {
     async addCart(cartData){
@@ -12,12 +18,8 @@ class CartsService {
 
     async getCart(cartId) {
         try {
-            let cart = await CartsModel.findById(cartId).populate("products").lean()
+            let cart = await CartsModel.findById(cartId).populate("products.product").lean()
             return cart
-            // res.render("carts", {
-            //     products: cart.products,
-            //     cartId: cart._id
-            // })
         } catch (error) {
             throw new Error("Error while getting a cart")
         }
@@ -107,7 +109,24 @@ class CartsService {
                         let mongUp = await CartsModel.findByIdAndUpdate(cartId, {products: updatedCart});
                     }
                 }
-            return checkoutCart;
+
+                const code =  uuidv4()
+                
+                const totAmount = (prods) =>{
+                    return prods.reduce((total,item) => total + item.product.price * item.quantity,0)
+                }
+
+                const newTicket = await ticketsService.addTicket({
+                    code: code,
+                    purchase_datetime: new Date(),
+                    products: checkoutCart,
+                    amount: totAmount(checkoutCart),
+                    purchaser: session.user._id
+                })
+
+                console.log(newTicket)
+                
+            return newTicket;
         } catch (error) {
             console.error("Error while updating the cart", error);
             throw new Error("Error while updating the cart")

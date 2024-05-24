@@ -5,6 +5,7 @@ class CartsController {
     async getCart(req, res){
         try {
             let cart = await cartsService.getCart(req.params.cid);
+            console.log(cart)
             res.render("carts", {
                 products: cart.products,
                 cartId: cart._id

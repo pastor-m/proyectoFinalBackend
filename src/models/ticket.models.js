@@ -1,10 +1,21 @@
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from 'uuid';
+
+
+const productSchema = new mongoose.Schema({
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "products",
+        required: true
+    },
+    quantity: {
+        type: Number,
+        required: true
+    }
+},{_id: false})
 
 const ticketSchema = new mongoose.Schema({
     code: {
         type: String,
-        default: () => uuidv4(),
         unique: true
     },
     purchase_datetime: {
@@ -16,8 +27,10 @@ const ticketSchema = new mongoose.Schema({
         required: true,
         index: true,
     },
+    products: [productSchema],
     purchaser: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
         required: true
     }
 });

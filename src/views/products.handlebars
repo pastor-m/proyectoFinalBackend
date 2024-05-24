@@ -12,7 +12,11 @@
         <li>{{this.stock}}</li>
         <li>{{this.category}}</li>
         <li>
-            <a href="/carts/660266d600779d397b4b6fc7/products/{{_id}}">Add to cart</a>
+            <form action="/carts/664ce86d28a2c7631430bf58/product/{{_id}}" method="post">
+            <button>
+                Add to cart
+            </button>
+            </form>
         </li>
         <li>
             <a href="/products/{{_id}}">View</a>

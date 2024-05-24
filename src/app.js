@@ -6,7 +6,6 @@ import cartsRouter from "./routes/carts.router.js"
 import productsRouter from "./routes/products.router.js"
 import viewsRouter from "./routes/views.router.js"
 import sessionsRouter from "./routes/sessions.router.js"
-import ticketsRouter from "./routes/tickets.router.js"
 import exphbs from "express-handlebars";
 import {Server} from "socket.io";
 import passport from "passport";
@@ -52,7 +51,6 @@ app.use("/", viewsRouter)
 
 app.use("/sessions", sessionsRouter)
 
-app.use("/tickets",ticketsRouter)
 ////CHAT
 
 const httpServer = app.listen(PORT, () => {
