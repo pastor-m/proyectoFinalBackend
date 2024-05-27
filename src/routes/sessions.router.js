@@ -117,7 +117,7 @@ router.post("/login", passport.authenticate("login", {failureRedirect: "/session
 
 
 
-router.get("/failedlogin", (req,res)=>{
+router.get("/failedlogin", async (req,res)=>{
     res.send("Failed login");
 })
 

@@ -6,6 +6,7 @@ import cartsRouter from "./routes/carts.router.js"
 import productsRouter from "./routes/products.router.js"
 import viewsRouter from "./routes/views.router.js"
 import sessionsRouter from "./routes/sessions.router.js"
+import mockingRouter from "./routes/mocking.router.js"
 import exphbs from "express-handlebars";
 import {Server} from "socket.io";
 import passport from "passport";
@@ -50,6 +51,9 @@ app.use("/carts", cartsRouter);
 app.use("/", viewsRouter)
 
 app.use("/sessions", sessionsRouter)
+
+app.use("/mockingproducts", mockingRouter)
+
 
 ////CHAT
 
