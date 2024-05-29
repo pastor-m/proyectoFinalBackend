@@ -14,6 +14,7 @@ import initializePassport from "./config/passport.conifg.js";
 import MessageModel from "./models/message.model.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import errorController from "./utils/error.js"
 
 
 //Handlebars
@@ -39,6 +40,7 @@ app.use(session({
     }
 }))
 
+
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,6 +56,8 @@ app.use("/sessions", sessionsRouter)
 
 app.use("/mockingproducts", mockingRouter)
 
+//Error middleware
+app.use(errorController) 
 
 ////CHAT
 

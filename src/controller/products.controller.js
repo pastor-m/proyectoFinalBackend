@@ -1,5 +1,8 @@
 import ProductsService from "../services/products.service.js";
 import passport from "passport";
+import CustomError from "../services/errors/custom-error.js";
+import { Errors } from "../services/errors/enum.js";
+import infoError from "../services/errors/info.js";
 const productsService = new ProductsService();
 
 class ProductsController {
@@ -51,13 +54,20 @@ class ProductsController {
     }
 
     //Agregamos producto
-    async addProd(req, res){
+    async addProd(req, res, next){
         try {
-            const user = req.session.user;
+            if(!req.body.title || !req.body.body || !req.body.price){
+                throw CustomError.createError({
+                    name: "New product",
+                    cause: infoError(req.body.title,req.body.description, req.body.price),
+                    message: "Error trying to create a product",
+                    code: Errors.INVLID_TYPE
+                })
+            }
             await productsService.addProd(req.body);
             res.send({message: "New product added"});
         } catch (error) {
-            res.status(500).json({message:"Server error"})
+            next(error)
         }
     }
 

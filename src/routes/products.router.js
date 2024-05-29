@@ -13,12 +13,12 @@ router.get("/", productsController.getProds);
 router.get("/:pid", productsController.getProdById);
 
 //Agregamos producto
-router.post("/",adminValidation, productsController.addProd);
+router.post("/", productsController.addProd);
 
 //Actualizamos producto
-router.put("/:pid", adminValidation,productsController.updateProd);
+router.put("/:pid",productsController.updateProd);
 
 //Eliminamos producto
-router.delete("/:pid", adminValidation, productsController.deleteProd)
+router.delete("/:pid", productsController.deleteProd)
 
 export default router
