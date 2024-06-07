@@ -15,6 +15,7 @@ import MessageModel from "./models/message.model.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import errorController from "./utils/error.js"
+import addLogger from "./utils/logger.js";
 
 
 //Handlebars
@@ -26,6 +27,7 @@ app.set("views","./src/views");
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("./src/public"));
+app.use(addLogger)
 app.use(session({
     secret: "jelou",
     resave: true,
@@ -55,6 +57,17 @@ app.use("/", viewsRouter)
 app.use("/sessions", sessionsRouter)
 
 app.use("/mockingproducts", mockingRouter)
+
+app.get("/loggerTest", (req,res)=>{
+    req.logger.fatal("Fatal message");
+    req.logger.error("Error message");
+    req.logger.warning("Warning message");
+    req.logger.info("Info message");
+    req.logger.http("Http message");
+    req.logger.debug("Debug message");
+
+    res.send("Logs sent")
+})
 
 //Error middleware
 app.use(errorController) 
