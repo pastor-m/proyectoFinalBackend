@@ -16,6 +16,9 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import errorController from "./utils/error.js"
 import addLogger from "./utils/logger.js";
+import mailRouter from "./routes/mail.router.js"
+import resetPassRouter from "./routes/reset.router.js"
+import cookieParser from "cookie-parser";
 
 
 //Handlebars
@@ -69,8 +72,15 @@ app.get("/loggerTest", (req,res)=>{
     res.send("Logs sent")
 })
 
+app.use(cookieParser());
+
 //Error middleware
 app.use(errorController) 
+
+//Mailer
+app.use("/mail", mailRouter)
+
+app.use("/resetPass", resetPassRouter)
 
 ////CHAT
 
