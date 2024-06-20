@@ -11,7 +11,7 @@ class ProductsController {
         
         try {
             const user = req.session.user;
-            console.log(req.query)
+            console.log("session products",req.session.user)
             let result = await productsService.getProds(req.query.limit,req.query.page,req.session.user,req.query.category,req.query.stock,req.query.sort)
             // console.log(result.productsResult)
             res.render("products", {
@@ -84,8 +84,21 @@ class ProductsController {
     //Eliminamos producto
     async deleteProd(req,res){
         try {
-            await productsService.deleteProd(req.params.pid);
-            return res.status(200).send({message: "Product deleted"});
+            const prodToDelete = await productsService.getProdById(req.params.pid)
+            if(req.session.user.role === 'premium'){
+                if(prodToDelete.owner === req.session.user._id){
+                    await productsService.deleteProd(req.params.pid);
+                    return res.status(200).send({message: "Product deleted"});
+                } else {
+                    return res.status(300).send({message: "Product can't be deleted"});
+                }
+            } else if (req.session.user.role === 'admin'){
+                await productsService.deleteProd(req.params.pid);
+                return res.status(200).send({message: "Product deleted"});
+            } else {
+                return res.status(300).send({message: "Product can't be deleted"});
+            }
+            
         } catch (error) {
             res.status(500).json({message:"Server error"})
         }

@@ -35,6 +35,12 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+        default: {type: String, default: 'admin'}, 
+        required: true
     }
 });
 

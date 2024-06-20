@@ -34,7 +34,7 @@ app.use(addLogger)
 app.use(session({
     secret: "jelou",
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://pastorml09:coderhouse@cluster0.pq1hrhv.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0",
         ttl: 1000,

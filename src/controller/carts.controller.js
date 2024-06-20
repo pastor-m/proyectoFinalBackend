@@ -1,5 +1,7 @@
 import CartsService from "../services/carts.service.js";
+import ProductsService from "../services/products.service.js";
 const cartsService = new CartsService();
+const productsService = new ProductsService();
 
 class CartsController {
     async getCart(req, res){
@@ -28,8 +30,18 @@ class CartsController {
     async addCartProd(req,res){
         
         try {
-            await cartsService.addCartProd(req.params.pid,req.params.cid, req.body.quantity);
-            res.send({message:"New product added"});
+            let productToAdd = await productsService.getProdById(req.params.pid);
+            if(req.session.user.role === 'premium'){
+                if(productToAdd.owner === req.session.user._id){
+                    return res.status(300).send({message: "User not allowed to add product"})
+                } else {
+                    await cartsService.addCartProd(req.params.pid,req.params.cid, req.body.quantity);
+                    return res.send({message:"New product added"});
+                }
+            } else {
+                await cartsService.addCartProd(req.params.pid,req.params.cid, req.body.quantity);
+            }
+           return res.send({message:"New product added"});
         } catch (error) {
             res.status(500).json({message: "Server error"})
         }

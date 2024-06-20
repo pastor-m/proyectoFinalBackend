@@ -108,9 +108,11 @@ router.post("/login", passport.authenticate("login", {failureRedirect: "/session
 
     req.session.login = true;
 
-    res.redirect("/products")
-
     req.session.save()
+
+    console.log("session login",req.session.user)
+
+    res.redirect("/products")
 
     }
 })
@@ -138,6 +140,8 @@ router.get("/githubcallback", passport.authenticate("github", {failureRedirect:"
     console.log(req.user.first_name)
     req.session.user = req.user;
     req.session.login = true;
+
+    console.log("session login github",req.session.user)
 
     res.redirect("/profile");
 })
