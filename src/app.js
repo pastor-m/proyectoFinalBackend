@@ -19,6 +19,8 @@ import addLogger from "./utils/logger.js";
 import mailRouter from "./routes/mail.router.js"
 import resetPassRouter from "./routes/reset.router.js"
 import cookieParser from "cookie-parser";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express"
 
 
 //Handlebars
@@ -104,3 +106,18 @@ io.on("connection", (socket) => {
         io.sockets.emit("message", messages)
     })
 } )
+
+const swaggerOptions = {
+    definition : {
+        openapi: "3.0.1",
+        info: {
+            title: "Documentacion sobre E-commerce",
+            description: "Tech products ecommerce app"
+        }
+    },
+    apis: ["./src/docs/**/*.yaml"]
+}
+
+const specs = swaggerJSDoc(swaggerOptions);
+
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
