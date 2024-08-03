@@ -11,7 +11,7 @@ class ProductsController {
         
         try {
             const user = req.session.user;
-            console.log("session products",req.session.user)
+            // console.log("session products",req.session.user)
             let result = await productsService.getProds(req.query.limit,req.query.page,req.session.user,req.query.category,req.query.stock,req.query.sort)
             // console.log(result.productsResult)
             res.render("products", {

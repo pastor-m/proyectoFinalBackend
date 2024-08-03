@@ -10,7 +10,7 @@ const generateToken = (email) =>{
 
 const authToken = (req,res,next) => {
     const authHeader = req.cookies.auth;
-    console.log("authHeader:", authHeader)
+    // console.log("authHeader:", authHeader)
     if(!authHeader){
         return res.status(401).send({
             error: "Not authenticated"
@@ -23,7 +23,7 @@ const authToken = (req,res,next) => {
 
     jwt.verify(token,PRIVATE_KEY,(error,decoded)=>{
         if(error){
-            console.log("este es el token",token)
+            // console.log("este es el token",token)
             return res.status(403).send({error:"Not authorized"})
         }
         req.auth = decoded

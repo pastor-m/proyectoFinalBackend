@@ -19,7 +19,6 @@ Swal.fire({
     allowOutsideClick: false
 }).then(result => {
     user = result.value;
-    console.log(user);
 })
 
 

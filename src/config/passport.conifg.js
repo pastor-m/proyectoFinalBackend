@@ -66,7 +66,7 @@ const initializePassport = () => {
         try {
             
             const user = await UserModel.findOne({email});
-            console.log(user);
+            // console.log(user);
             if(!user){
                 console.log("User doesn't exist")
                 return done (null, false);
@@ -97,7 +97,7 @@ const initializePassport = () => {
         clientSecret: "186936dc3433d2de68afbe252598d5ec63f7eb78",
         callbackURL: "http://localhost:8080/sessions/githubcallback"
     }, async(accessToken, refreshToken, profile, done)=>{
-        console.log("Perfil del ususario:", profile._json.email)
+        // console.log("Perfil del ususario:", profile._json.email)
         try {
             let user = await UserModel.findOne({email: profile._json.email});
 

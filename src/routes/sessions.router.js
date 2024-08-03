@@ -53,7 +53,7 @@ router.post("/login", passport.authenticate("login", {failureRedirect: "/session
 
     req.session.save()
 
-    console.log("session login",req.session.user)
+    
 
     res.redirect("/products")
 
@@ -83,11 +83,11 @@ router.get("/logout", async (req,res)=>{
 router.get("/github", passport.authenticate("github", {scope: ["user.email"]}), async(req,res)=>{})
 
 router.get("/githubcallback", passport.authenticate("github", {failureRedirect:"/login"}), async(req,res)=>{
-    console.log(req.user.first_name)
+    
     req.session.user = req.user;
     req.session.login = true;
 
-    console.log("session login github",req.session.user)
+    
 
     res.redirect("/profile");
 })

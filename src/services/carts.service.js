@@ -105,7 +105,7 @@ class CartsService {
                         checkoutCart.push(cart.products[i])
                     } else {
                         updatedCart = cart.products.splice(i);
-                        console.log(cartId);
+                        
                         let mongUp = await CartsModel.findByIdAndUpdate(cartId, {products: updatedCart});
                     }
                 }

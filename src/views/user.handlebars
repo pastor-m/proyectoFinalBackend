@@ -1,0 +1,28 @@
+<h1>User</h1>
+
+<ul style="list-style: none;">
+    <li>Name: {{first_name}}</li>
+    <li>Last name: {{last_name}}</li>
+    <li>Role: {{role}}</li>
+    <li>
+        <hr>
+    </li>
+</ul>
+
+<ul>
+<form action="/users/{{id}}" method="POST">
+    <button>Delete</button>
+</form>
+
+<form action="/users/premium/{{id}}" method="post">
+    <select name="roles">
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+    </select>
+    <button type="submit">Update</button>
+</form>
+
+<button>
+    <a href="/users">Back</a>
+</button>
+</ul>
