@@ -1,6 +1,5 @@
 import { Router } from "express";
 const router = Router();
-// import ProductsModel from "../models/products.models.js";
 import ProductsController from "../controller/products.controller.js";
 import adminValidation from "../middleware/adminValidation.js";
 const productsController = new ProductsController();
@@ -20,5 +19,7 @@ router.put("/:pid",productsController.updateProd);
 
 //Eliminamos producto
 router.delete("/:pid", productsController.deleteProd)
+
+router.get("/",);
 
 export default router

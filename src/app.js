@@ -19,6 +19,7 @@ import addLogger from "./utils/logger.js";
 import mailRouter from "./routes/mail.router.js"
 import resetPassRouter from "./routes/reset.router.js"
 import usersRouter from "./routes/users.router.js"
+import addProductRouter from "./routes/addProd.router.js"
 import cookieParser from "cookie-parser";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express"
@@ -65,6 +66,8 @@ app.use("/sessions", sessionsRouter)
 app.use("/mockingproducts", mockingRouter)
 
 app.use('/users', usersRouter)
+
+app.use('/addProd', addProductRouter)
 
 app.get("/loggerTest", (req,res)=>{
     req.logger.fatal("Fatal message");

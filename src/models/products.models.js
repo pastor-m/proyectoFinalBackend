@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema({
         index: true,
     },
     status: {
-        type: Boolean,
+        type: String,
         required: true
     },
     stock: {
@@ -37,9 +37,7 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-        default: {type: String, default: 'admin'}, 
+        type: Object,
         required: true
     }
 });

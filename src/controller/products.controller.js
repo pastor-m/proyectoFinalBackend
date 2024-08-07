@@ -1,4 +1,5 @@
 import ProductsService from "../services/products.service.js";
+import premiumProdEmail from "../middleware/premiumProdEmail.js";
 import passport from "passport";
 import CustomError from "../services/errors/custom-error.js";
 import { Errors } from "../services/errors/enum.js";
@@ -11,9 +12,7 @@ class ProductsController {
         
         try {
             const user = req.session.user;
-            // console.log("session products",req.session.user)
             let result = await productsService.getProds(req.query.limit,req.query.page,req.session.user,req.query.category,req.query.stock,req.query.sort)
-            // console.log(result.productsResult)
             res.render("products", {
             products: result.productsResult,
             hasPrevPage: result.products.hasPrevPage,
@@ -38,7 +37,6 @@ class ProductsController {
         try {
             const user = req.session.user;
             let product = await productsService.getProdById(req.params.pid)
-            console.log(product)
             res.render("product",{
                 id: product._id,
                 title: product.title,
@@ -49,25 +47,27 @@ class ProductsController {
                 price: product.price
             })
         } catch (error) {
+            
             res.status(500).json({message:"Server error"})
         }
     }
 
-    //Agregamos producto
-    async addProd(req, res, next){
+    async addProductView(req,res){
         try {
-            if(!req.body.title || !req.body.body || !req.body.price){
-                throw CustomError.createError({
-                    name: "New product",
-                    cause: infoError(req.body.title,req.body.description, req.body.price),
-                    message: "Error trying to create a product",
-                    code: Errors.INVLID_TYPE
-                })
-            }
-            await productsService.addProd(req.body);
-            res.send({message: "New product added"});
+            return res.render("addProdView")
         } catch (error) {
-            next(error)
+            console.log("error aqui1")
+        }
+    }
+
+    //Agregamos producto
+    async addProd(req, res){
+        try {
+            const newProd =  await productsService.addProd(req.body, req.session.user);
+            res.send({message: "New product added"});
+            return newProd
+        } catch (error) {
+            res.status(500).json({message:"Server error"});
         }
     }
 
@@ -86,7 +86,8 @@ class ProductsController {
         try {
             const prodToDelete = await productsService.getProdById(req.params.pid)
             if(req.session.user.role === 'premium'){
-                if(prodToDelete.owner === req.session.user._id){
+                if(prodToDelete.owner.role === 'premium'){
+                    premiumProdEmail(req.session.user.email,prodToDelete)
                     await productsService.deleteProd(req.params.pid);
                     return res.status(200).send({message: "Product deleted"});
                 } else {

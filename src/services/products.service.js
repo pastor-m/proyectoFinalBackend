@@ -101,7 +101,7 @@ class ProductsService {
             }
         }
         } catch (error) {
-            throw new Error("Error while getting products")
+            return  
         }
     }
 
@@ -120,13 +120,26 @@ class ProductsService {
     }
 
     //Agregamos producto
-    async addProd(prod){
+    async addProd(prod, user){
         try {
-            const newProduct = new ProductsModel(prod);
-            return await newProduct.save();
-            // res.send({message: "New product added"})
+            console.log(prod, user)
+            const newProduct = new ProductsModel({
+                title: prod.title,
+                description: prod.description,
+                code: prod.code,
+                price: prod.price,
+                status: prod.status,
+                stock: prod.stock,
+                thumbnail: prod.thumbnail,
+                category: prod.category,
+                owner: user
+            });
+            console.log(newProduct)
+            await newProduct.save();
+            return newProduct;
         } catch (error) {
-            throw new Error("Error while adding products")
+            console.error('Error in productsService.addProd:', error);
+            throw error
         }
     }
 
