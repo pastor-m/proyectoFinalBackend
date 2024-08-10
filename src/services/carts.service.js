@@ -1,10 +1,15 @@
 import session from "express-session";
 import CartsModel from "../models/carts.models.js";
 import TicketsService from "./tickets.services.js";
+import transport from "../services/mail.service.js";
 const ticketsService = new TicketsService()
 import { v4 as uuidv4 } from 'uuid';
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
+import UserModel from "../models/users.model.js";
+import ProductsModel from "../models/products.models.js";
+import ProductsService from "./products.service.js";
+const productsService = new ProductsService()
 
 class CartsService {
     async addCart(cartData){
@@ -104,7 +109,7 @@ class CartsService {
         }
     }
 
-    async cartPurchase(cartId){
+    async cartPurchase(cartId, userId){
         try {
             let updatedCart = [];
             let checkoutCart = [];
@@ -113,6 +118,7 @@ class CartsService {
                     path: 'products.product',
                     model: 'products' 
                 }).lean();
+            let user = await UserModel.findById(userId)
                 for (let i = 0; i < cart.products.length; i++) {
                     if(cart.products[i].quantity < cart.products[i].product.stock){
                         checkoutCart.push(cart.products[i])
@@ -122,6 +128,7 @@ class CartsService {
                         let mongUp = await CartsModel.findByIdAndUpdate(cartId, {products: updatedCart});
                     }
                 }
+
 
                 const code =  uuidv4()
                 
@@ -134,10 +141,32 @@ class CartsService {
                     purchase_datetime: new Date(),
                     products: checkoutCart,
                     amount: totAmount(checkoutCart),
-                    purchaser: session.user._id
+                    purchaser: userId
                 })
 
+                // transport.sendMail({
+                //     from: "Coder Email <pastor.ml09@gmail.com>",
+                //     to: user.email,
+                //     subject: "Purchase ticket",
+                //     html: `<h1>Purchase confirmation</h1>
+                //             <p>Thanks for your purchase, see below for your items information</p>
+                //             <p>Code: ${newTicket.code}</p>
+                //             <p>Date and time: ${newTicket.purchase_datetime}</p>
+                //             <p>Products: ${newTicket.products}</p>
+                //             <p>Total amount: $${newTicket.amount}</p>`
+                // })
                 console.log(newTicket)
+
+                for (let i = 0; i < cart.products.length; i++){
+                    let pid = (cart.products[i].product._id).valueOf()
+                    let cartQty = cart.products[i].quantity;
+                    let prod = await ProductsModel.findById(pid)
+                    let finalQty = prod.stock - cartQty;
+                    await productsService.updateProdQty(pid,finalQty)
+                }
+
+
+                await CartsModel.findByIdAndUpdate(cartId,{products:[]})
                 
             return newTicket;
         } catch (error) {

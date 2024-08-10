@@ -6,7 +6,7 @@ class TicketsService {
     async addTicket(cart){
         try {
             const newTicket = new TicketModel(cart);
-            return await newTicket.save()
+            return newTicket.save();
         } catch (error) {
             throw new Error("Error while creating a ticket")
         }

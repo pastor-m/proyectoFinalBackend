@@ -8,10 +8,10 @@
 
 <ul style="list-style: none;">
     {{#each products}}
-        <li>{{this.title}}</li>
-        <li>${{this.price}}</li>
-        <li>{{this.stock}}</li>
-        <li>{{this.category}}</li>
+        <li>Title: {{this.title}}</li>
+        <li>Price: ${{this.price}}</li>
+        <li>Stock: {{this.stock}}</li>
+        <li>Category: {{this.category}}</li>
         <li>
             <a href="/products/{{_id}}">View</a>
         </li>

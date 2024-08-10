@@ -12,4 +12,10 @@
             <hr>
         </li>
     {{/each}}
+
+<form action="/carts/{{cartId}}/purchase" method="POST">
+    <button>
+        Checkout
+    </button>
+</form>
 </ul>

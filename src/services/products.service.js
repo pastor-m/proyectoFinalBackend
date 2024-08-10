@@ -155,6 +155,18 @@ class ProductsService {
         }
     }
 
+    async updateProdQty(pid,qty){
+        try {
+            console.log(pid,qty)
+            const product = await ProductsModel.findByIdAndUpdate(pid, {stock:qty});
+            if(!product){
+                throw new Error("Error while updating products");
+            }
+        } catch (error) {
+            throw new Error("Error while updating products")
+        }
+    }
+
     async deleteProd(pid){
         try {
             const product = await ProductsModel.findByIdAndDelete(pid);
