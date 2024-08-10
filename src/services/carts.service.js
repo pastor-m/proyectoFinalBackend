@@ -144,17 +144,17 @@ class CartsService {
                     purchaser: userId
                 })
 
-                // transport.sendMail({
-                //     from: "Coder Email <pastor.ml09@gmail.com>",
-                //     to: user.email,
-                //     subject: "Purchase ticket",
-                //     html: `<h1>Purchase confirmation</h1>
-                //             <p>Thanks for your purchase, see below for your items information</p>
-                //             <p>Code: ${newTicket.code}</p>
-                //             <p>Date and time: ${newTicket.purchase_datetime}</p>
-                //             <p>Products: ${newTicket.products}</p>
-                //             <p>Total amount: $${newTicket.amount}</p>`
-                // })
+                transport.sendMail({
+                    from: "Coder Email <pastor.ml09@gmail.com>",
+                    to: user.email,
+                    subject: "Purchase ticket",
+                    html: `<h1>Purchase confirmation</h1>
+                            <p>Thanks for your purchase, see below for your items information</p>
+                            <p>Code: ${newTicket.code}</p>
+                            <p>Date and time: ${newTicket.purchase_datetime}</p>
+                            <p>Products: ${newTicket.products}</p>
+                            <p>Total amount: $${newTicket.amount}</p>`
+                })
                 console.log(newTicket)
 
                 for (let i = 0; i < cart.products.length; i++){
