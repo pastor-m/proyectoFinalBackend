@@ -44,7 +44,8 @@ router.post("/login", passport.authenticate("login", {failureRedirect: "/session
         age: req.user.age,
         first_name: req.user.first_name,
         last_name: req.user.last_name,
-        role: req.user.role
+        role: req.user.role,
+        cart: req.user.cart
     };
 
     usersService.updateDate(req.user.email)

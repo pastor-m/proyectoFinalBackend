@@ -7,11 +7,20 @@
         <li>{{category}}</li>
         <li>{{thumbnail}}</li>
         <li>
-            <a href="/carts">Add to cart</a>
-        </li>
-        <li>
             <hr>
         </li>
+        <li>
+            <form action="/carts/{{cart}}/product/{{id}}" method="post">
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" name="quantity" min="1">
+            <button>
+                Add to cart
+            </button>
+            </form>
+        </li>
+        <form action="/products/deleteProd/{{id}}" method="POST">
+            <button>Delete</button>
+        </form>
 </ul>
 
 <button>

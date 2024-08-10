@@ -4,20 +4,14 @@
 <p>Age:{{user.age}}</p>
 <p>Email: {{user.email}}</p>
 <p>Role: {{user.role}}</p>
+<p>Cart: {{user.cart}}</p>
 
-<ul>
+<ul style="list-style: none;">
     {{#each products}}
         <li>{{this.title}}</li>
         <li>${{this.price}}</li>
         <li>{{this.stock}}</li>
         <li>{{this.category}}</li>
-        <li>
-            <form action="/carts/664ce86d28a2c7631430bf58/product/{{_id}}" method="post">
-            <button>
-                Add to cart
-            </button>
-            </form>
-        </li>
         <li>
             <a href="/products/{{_id}}">View</a>
         </li>

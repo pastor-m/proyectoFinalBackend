@@ -12,6 +12,7 @@ class ProductsController {
         
         try {
             const user = req.session.user;
+            console.log(user)
             let result = await productsService.getProds(req.query.limit,req.query.page,req.session.user,req.query.category,req.query.stock,req.query.sort)
             res.render("products", {
             products: result.productsResult,
@@ -25,7 +26,8 @@ class ProductsController {
             prevLink: result.products.prevLink,
             nextLink: result.products.nextLink,
             id: result.productsResult._id,
-            user: user
+            user: user,
+            cart: req.session.user.cart
             })
         } catch (error) {
             res.status(500).json({message:"Server error"})
@@ -36,6 +38,7 @@ class ProductsController {
     async getProdById(req, res){
         try {
             const user = req.session.user;
+            console.log(user)
             let product = await productsService.getProdById(req.params.pid)
             res.render("product",{
                 id: product._id,
@@ -44,7 +47,8 @@ class ProductsController {
                 category: product.category,
                 stock: product.stock,
                 thumbnail: product.thumbnail,
-                price: product.price
+                price: product.price,
+                cart: req.session.user.cart
             })
         } catch (error) {
             
@@ -86,6 +90,7 @@ class ProductsController {
         try {
             const prodToDelete = await productsService.getProdById(req.params.pid)
             if(req.session.user.role === 'premium'){
+                console.log('delete prod controller')
                 if(prodToDelete.owner.role === 'premium'){
                     premiumProdEmail(req.session.user.email,prodToDelete)
                     await productsService.deleteProd(req.params.pid);

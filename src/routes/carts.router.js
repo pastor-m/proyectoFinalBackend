@@ -3,7 +3,7 @@ import CartsController from "../controller/carts.controller.js";
 const cartsController = new CartsController();
 const router = Router();
 import userValidation from "../middleware/userValidation.js";
-import premiumValidation from "../middleware/premiumValidation.js";
+import userPremiumValidation from "../middleware/userPremiumValidation.js";
 
 // import CartsModel from "../models/carts.models.js";
 
@@ -14,7 +14,7 @@ router.get("/:cid", cartsController.getCart);
 router.post("/", userValidation, cartsController.addCart);
 
 //Agregar productos al carrito
-router.post("/:cid/product/:pid", (userValidation || premiumValidation),cartsController.addCartProd)
+router.post("/:cid/product/:pid", userPremiumValidation,cartsController.addCartProd)
 
 //Eliminar productos del carrito
 router.delete("/:cid/product/:pid", userValidation, cartsController.deleteCartProd)

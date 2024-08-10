@@ -2,12 +2,12 @@
 <h2>Cart ID {{cartId}}</h2>
 
 <h2>Products from cart {{cartId}}</h2>
-<ul>
+<ul style="list-style: none;">
     {{#each products}}
-        <li>{{this.product.title}}</li>
-        <li>${{this.product.price}}</li>
-        <li>Stock:{{this.product.stock}}</li>
-        <li>{{this.product.category}}</li>
+        <li>Description: {{this.product.title}}</li>
+        <li>Price: ${{this.product.price}}</li>
+        <li>Category: {{this.product.category}}</li>
+        <li>Quantity:{{this.quantity}}</li>
         <li>
             <hr>
         </li>

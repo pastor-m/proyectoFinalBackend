@@ -6,7 +6,7 @@ function premiumProdEmail(email,prod){
         to: email,
         subject: "Producto eliminado",
         html: `<h1>Producto Eliminado</h2>
-                <p>Su producto ${prod} ha sido eliminado</p>`
+                <p>Su producto ${prod.title} ha sido eliminado</p>`
     })
 }
 

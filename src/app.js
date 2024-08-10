@@ -95,7 +95,6 @@ app.use("/resetPass", resetPassRouter)
 const httpServer = app.listen(PORT, () => {
     console.log(`Listening to port ${PORT}`);
 })
-//1) Me guardo una referencia del servidor. 
 
 
 const io = new Server(httpServer);

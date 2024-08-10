@@ -25,21 +25,6 @@ class CartsService {
         }
     }
 
-    async addCartProd(prodId,cartId,quantity){
-        try {
-            const newProduct = {
-                product: prodId,
-                quantity
-            }
-            const cart = await CartsModel.findById(cartId);
-            cart.products.push(newProduct);
-            const updatedCart = await CartsModel.findByIdAndUpdate(cartId, cart);
-            // res.send({message:"New product added"});
-        } catch (error) {
-            throw new Error("Error while adding a product to the cart")
-        }
-    }
-
     async deleteCartProd(prodId,cartId){
         try {
             const productToDelete = prodId;
@@ -88,6 +73,34 @@ class CartsService {
     
         } catch (error) {
             throw new Error("Error while updating the cart")
+        }
+    }
+
+    async addCartProd(prodId,cartId,quantity){
+        try {
+            const newProduct = {
+                product: prodId,
+                quantity
+            }
+            let cart = await CartsModel.findById(cartId)
+                .populate({
+                    path: 'products.product',
+                    model: 'products' 
+                }).lean();
+            let productsArray = cart.products;
+            let foundProd = productsArray.find((obj)=>(obj.product._id.valueOf()) == prodId)
+            let foundProdIndex = productsArray.findIndex((obj)=>(obj.product._id.valueOf()) == prodId)
+            if(foundProd != undefined){
+                productsArray[foundProdIndex].quantity = parseInt(productsArray[foundProdIndex].quantity) + parseInt(quantity);
+                const updatedCart = await CartsModel.findByIdAndUpdate(cartId, cart);
+            } else {
+                cart.products.push(newProduct);
+                const updatedCart = await CartsModel.findByIdAndUpdate(cartId, cart);
+            }
+
+            // res.send({message:"New product added"});
+        } catch (error) {
+            throw new Error("Error while adding a product to the cart")
         }
     }
 

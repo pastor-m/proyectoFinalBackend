@@ -18,8 +18,7 @@ router.post("/", productsController.addProd);
 router.put("/:pid",productsController.updateProd);
 
 //Eliminamos producto
-router.delete("/:pid", productsController.deleteProd)
+router.post("/deleteProd/:pid", productsController.deleteProd)
 
-router.get("/",);
 
 export default router
